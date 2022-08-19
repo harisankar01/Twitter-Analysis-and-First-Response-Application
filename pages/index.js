@@ -13,16 +13,10 @@ export default function Home({val}) {
 </>
   )
 }
-// db.mycoll.aggregate([
-//     {Prediction:"1.0"},
-//     { $sample: { size: 1 } }
-// ])
 export const getServerSideProps=async()=>{
   let db=await connectToDatabase(); 
-  let val= JSON.parse(JSON.stringify(await db.collection("C1").aggregate([
-    { $match:{Prediction:"1.0"}},
-    { $sample: { size: 20 } }
-]).toArray()));
+  let val= JSON.parse(JSON.stringify(await db.collection("tweets").find(
+    {Prediction:"1.0"}).sort({$Time_of_tweet:-1}).limit(25).toArray()));
 return {
     props:{
       val

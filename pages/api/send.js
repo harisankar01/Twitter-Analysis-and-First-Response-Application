@@ -1,4 +1,4 @@
-import { Db, ObjectId } from 'mongodb'
+import { Db, Int32, ObjectId } from 'mongodb'
 import { connectToDatabase } from "../../src/service/db";
 export default async function(req,res){
 const { method } = req;
@@ -19,13 +19,15 @@ switch (method) {
      case 'PUT':
        try{
          const db=await connectToDatabase()
-        const {user_id,imgUrl,user}=req.body;
-        const id=new ObjectId(user_id);
-          db.collection("login_page").updateOne(
-            {_id:id},
+        const result=JSON.parse(req.body);
+        const prior=new Int32(result.priority)
+        const ID=new ObjectId(result.id)
+        console.log(prior,ID);
+        db.collection("tweets").updateOne(
+            {_id:ID},
             {$set:
               {
-               profile_image: imgUrl
+               Priority: prior
               }
             }
           )

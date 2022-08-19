@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Divider } from "@mui/material";
-import { Paper } from '@mui/material';
+import Rating from '@mui/material/Rating';
+import Icon from '@mui/material/Icon';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
+import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
+import Tooltip from '@mui/material/Tooltip';
 const bull = (
   <Box
     component="span"
@@ -117,8 +119,16 @@ const MessageArea=({val,children})=> {
 //   const { selectedChat, userInfo, refreshContactList } = props;
   const [text, setText] = useState("");
   const [pickerVisible, togglePicker] = useState(false);
-  const [messageList, setMessageList] = useState([{"message":"message2","id":1},{"message":"messagwe2","id":2}]);
+  const [arr_vals, setarr_vals] = useState(val);
 
+  const UpdateRating=async(val,id)=>{
+    // console.log(val,id);
+    let response= await fetch('/api/send',{
+      method:"PUT",
+      body:JSON.stringify({"priority":val,"id":id}),
+    })
+    console.log(response);
+  }
 //   useEffect(() => {
 //     setMessageList(selectedChat.channelData.messages);
 //   }, [selectedChat]);
@@ -171,7 +181,15 @@ const MessageArea=({val,children})=> {
         </ProfileInfo>
       </ProfileHeader> */}
       <MessageContainer>
-        {val.map((message) => {
+        <div style={{display:"inline-flex",width:800,alignItems:"flex-start", cursor:"pointer"}}>
+           <Tooltip title="Sort tweets by priority">
+      <CategoryRoundedIcon onClick={()=>{
+        arr_vals.sort((v1,v2)=>v2.Priority-v1.Priority)
+        setarr_vals([...arr_vals]);
+        }}></CategoryRoundedIcon>
+           </Tooltip>
+        </div>
+        {arr_vals.map((message) => {
           return (
               <Message key={message._id}>
 <Card sx={{ minWidth:700,maxWidth:750,maxHeight:350,minHeight:150 }}>
@@ -191,6 +209,9 @@ const MessageArea=({val,children})=> {
           Tweeted by: {message["User name"]}
         </Typography>
       </CardContent>
+      <Typography align="right">
+      <Rating name="size-medium" align="left" defaultValue={message.Priority} onClick={(e)=>UpdateRating(e.target.value,message._id)} />
+      </Typography>
     </Card>
                 <Divider />
               </Message>

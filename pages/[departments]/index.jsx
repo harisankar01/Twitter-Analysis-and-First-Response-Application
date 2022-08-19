@@ -8,7 +8,7 @@ export default function Departments({val,value}) {
 }
 export const getServerSideProps=async(context)=>{
     let name=context.query.departments;
-    console.log(name);
+    // console.log(name);
     let query;
 if(name=="Fire"){
   query="fire breaks"
@@ -26,8 +26,8 @@ else{
     query="police complaints"
 }
   let db=await connectToDatabase(); 
-  let val= JSON.parse(JSON.stringify(await db.collection("C1").find({$and:[{Department:`${query}`},{Prediction:"1.0"}]}).toArray()));
-  let value= JSON.parse(JSON.stringify(await db.collection("chat").find({Departmen: name}).toArray()));
+  let val= JSON.parse(JSON.stringify(await db.collection("tweets").find({$and:[{Department:`${query}`},{Prediction:"1.0"}]}).sort({$Time_of_tweet:1}).limit(50).toArray()));
+  let value= JSON.parse(JSON.stringify(await db.collection("Chat").find({Department: name}).toArray()));
 return {
     props:{
       val,value
