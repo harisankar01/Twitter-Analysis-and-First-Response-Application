@@ -1,6 +1,6 @@
 import React from 'react'
-import Chat from "../../components/GreatArea"
-import { connectToDatabase } from "../../src/service/db";
+import Chat from "../../../components/GreatArea"
+import { connectToDatabase } from '../../../src/service/db'
 export default function Departments({val,value}) {
   return (
     <Chat val={val}></Chat>

@@ -1,25 +1,33 @@
-import Layout from "../components/Sidebar/Layout"
-import MessageArea from "../components/messageArea"
-import { connectToDatabase } from "../src/service/db";
-export default function Home({val}) {
+import React from "react";
+import styled from "styled-components";
+import Sidebar from "../components/Login/Navbar";
+
+const App = () => {
   return (
-<>
-<MessageArea val={val}>
-  <Layout>
-  </Layout>
-</MessageArea>
+    <Container>
+      <Wrapper>
+        <Sidebar />
+      </Wrapper>
+    </Container>
+  );
+};
 
+const Container = styled.div`
+  background: #eefcff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+`;
+const Wrapper = styled.div`
+  background-image: url("/static/backstretch.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  display: flex;
+`;
 
-</>
-  )
-}
-export const getServerSideProps=async()=>{
-  let db=await connectToDatabase(); 
-  let val= JSON.parse(JSON.stringify(await db.collection("tweets").find(
-    {Prediction:"1.0"}).sort({$Time_of_tweet:-1}).limit(25).toArray()));
-return {
-    props:{
-      val
-    }
-}
-}
+export default App;

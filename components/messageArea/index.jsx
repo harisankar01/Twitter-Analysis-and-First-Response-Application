@@ -11,6 +11,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
 import Tooltip from '@mui/material/Tooltip';
+import StyleIcon from '@mui/icons-material/Style';
+import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
 const bull = (
   <Box
     component="span"
@@ -115,6 +117,15 @@ const Message = styled.div`
   font-size: 22px;
 `;
 
+const Priority_sort=styled.div`
+  display:inline-flex;
+  flex-direction: column;
+  width:800px;
+  position: absolute;
+  align-items:flex-start;
+  cursor: pointer;
+`;
+
 const MessageArea=({val,children})=> {
 //   const { selectedChat, userInfo, refreshContactList } = props;
   const [text, setText] = useState("");
@@ -127,7 +138,7 @@ const MessageArea=({val,children})=> {
       method:"PUT",
       body:JSON.stringify({"priority":val,"id":id}),
     })
-    console.log(response);
+    // console.log(response);
   }
 //   useEffect(() => {
 //     setMessageList(selectedChat.channelData.messages);
@@ -179,16 +190,32 @@ const MessageArea=({val,children})=> {
           <ProfileImage src={selectedChat.otherUser.profilePic} />
           <ContactName>{selectedChat.otherUser.name}</ContactName>
         </ProfileInfo>
+        style={{cursor:"pointer",display:"inline-flex",width:800,}}
       </ProfileHeader> */}
-      <MessageContainer>
-        <div style={{display:"inline-flex",width:800,alignItems:"flex-start", cursor:"pointer"}}>
+      {console.log(
+        children.props
+      )}
+      <MessageContainer> 
+        <Priority_sort>
            <Tooltip title="Sort tweets by priority">
       <CategoryRoundedIcon onClick={()=>{
         arr_vals.sort((v1,v2)=>v2.Priority-v1.Priority)
         setarr_vals([...arr_vals]);
         }}></CategoryRoundedIcon>
            </Tooltip>
-        </div>
+          <Box sx={{ m: 0.5 }} />
+          <Tooltip title="Show Tagged tweets">
+           <StyleIcon>
+           </StyleIcon>
+           </Tooltip>
+          <Box sx={{ m: 0.5 }} />
+           <Tooltip title="Change or add mail address">
+           <MarkEmailUnreadIcon>
+           </MarkEmailUnreadIcon>
+           </Tooltip>
+        </Priority_sort>
+
+
         {arr_vals.map((message) => {
           return (
               <Message key={message._id}>
@@ -227,10 +254,8 @@ const MessageArea=({val,children})=> {
           </MessageDiv>
         ))}
       </MessageContainer> */}
-
-      {/* <ChatBox>
-        <SearchContainer>
-          {pickerVisible && (
+              {/* <SearchContainer></SearchContainer> */}
+{pickerVisible && (
             <Picker
               pickerStyle={{ position: "absolute", bottom: "60px" }}
               onEmojiClick={(e, emoji) => {
@@ -239,6 +264,8 @@ const MessageArea=({val,children})=> {
               }}
             />
           )}
+      {/* <ChatBox>
+
           <EmojiImage
             src={"/whatsapp-clone/data.svg"}
             onClick={() => togglePicker((pickerVisible) => !pickerVisible)}

@@ -15,24 +15,26 @@ import {AiFillFire} from "react-icons/ai"
 import {FaTrafficLight} from "react-icons/fa"
 import {TbBuildingFactory} from "react-icons/tb"
 import {FaTrashRestoreAlt} from "react-icons/fa"
-const menuItems = [
-  { id: 1, label: "Home", icon: HomeIcon, link: "/" },
-  { id: 2, label: "Fire Department", icon: AiFillFire, link: "/Fire" },
-  { id: 3, label: "Traffic accidents", icon: FaTrafficLight, link: "/Traffic accidents" },
-  { id: 4, label: "Polloution problems", icon: TbBuildingFactory, link: "/pollution" },
-  {id:5,label:"Sanity Department",icon:FaTrashRestoreAlt,link:"/Sanity"},
-  {id:6,label:"Complaints",icon:ArticleIcon,link:"/Complaints"}
-];
+
+
 
 const Sidebar = () => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
+  const router =useRouter()
+  const user_name=router.query.user
   const [isCollapsible, setIsCollapsible] = useState(false);
-
-  const router = useRouter();
+const menuItems = [
+  { id: 1, label: "Home", icon: HomeIcon, link: `/${user_name}` },
+  { id: 2, label: "Fire Department", icon: AiFillFire, link: `/${user_name}/Fire` },
+  { id: 3, label: "Traffic accidents", icon: FaTrafficLight, link: `/${user_name}/Traffic accidents` },
+  { id: 4, label: "Polloution problems", icon: TbBuildingFactory, link: `/${user_name}/pollution` },
+  {id:5,label:"Sanity Department",icon:FaTrashRestoreAlt,link:`${user_name}/Sanity`},
+  {id:6,label:"Complaints",icon:ArticleIcon,link:`/${user_name}/Complaints`}
+];
 
   const activeMenu = useMemo(
-    () => menuItems.find((menu) => menu.link === router.pathname),
-    [router.pathname]
+    () => menuItems.find((menu) => menu.link === `/${user_name}`),
+    [`/${user_name}`]
   );
 
   const wrapperClasses = classNames(
@@ -123,7 +125,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <div className={`${getNavItemClasses({})} px-3 py-4`}>
+      <div className={`${getNavItemClasses({})} px-3 py-4`} onClick={()=>{router.push("/")}}>
         <div style={{ width: "2.5rem" }}>
           <LogoutIcon />
         </div>

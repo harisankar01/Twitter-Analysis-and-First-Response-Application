@@ -95,11 +95,12 @@ const Chat = ({val}) => {
                 </List>
             </Grid>
             <Grid item xs={9}>
-                <List className={classes.messageArea}>
+                <List className={classes.messageArea} >
                     {val.map((message)=>{
                         return(
                              <div key={message._id}>
-<Card sx={{ minWidth:700,maxWidth:750,maxHeight:350,minHeight:150 }} style={{backgroundColor:"#f0d2ee", float:"right"}}>
+<Card sx={{ minWidth:700,maxWidth:750,maxHeight:350,minHeight:150 }} 
+style={{backgroundColor:"#f0d2ee", float:"right"}} onClick={(()=>router.push(`/user/${dept}/${message._id}`))}>
       <CardContent>
         <Typography sx={{ fontSize: 8 }} color="text.secondary" gutterBottom>
           Department: {message.Department}
@@ -121,18 +122,18 @@ const Chat = ({val}) => {
                         )
                     })}
                 </List>
-                <Divider />
+                {/* <Divider /> */}
 
-                <Grid container style={{padding: '20px'}}>
+                {/* <Grid container style={{padding: '20px'}}>
                     <Grid item xs={11}>
                         <TextField id="outlined-basic-email" onChange={(e)=>{
                             setmsg({...msg,message: e.target.value})
                         }} label="Type Something" fullWidth />
                     </Grid>
-                    <Grid xs={1} align="right">
+                    {/* <Grid xs={1} align="right">
                         <Fab color="primary" aria-label="add" onClick={send}><SendIcon /></Fab>
-                    </Grid>
-                </Grid>
+                    </Grid> */}
+                {/* </Grid> */} 
             </Grid>
         </Grid>
       </div>
