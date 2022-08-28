@@ -6,10 +6,21 @@ const { method } = req;
 switch (method) {
      case 'POST':
       try {
-        console.log(req.body);
         const db=await connectToDatabase()
-        db.collection("chat").insertOne(req.body);
-        res.status(201).json({ success: true})
+        const loc=JSON.parse(req.body)
+        const user_state_id=location.loc.find((item)=>item.city_name==loc.location).state_id
+        const user_state_name=states.states.find((i)=>i.state_id==user_state_id).state_name.toUpperCase();
+        let result=JSON.parse(JSON.stringify(await db.collection("users").findOne({"state":user_state_name})));
+
+    let tweets_collection=[]
+    let final = await Promise.all(result.tweets.map(async (n) => {
+    let auth = new ObjectId(n);
+    let author = JSON.parse(JSON.stringify(await db.collection("tweets").findOne({ _id: auth })));
+    tweets_collection.push(author);
+    return tweets_collection
+  }))
+//   console.log(final);
+        res.status(201).json({ "success": true,"tweets":final[0]})
       } catch (error) {
         res.status(400).json({ success: false })
       }
@@ -22,8 +33,7 @@ switch (method) {
          const db=await connectToDatabase()
         const result=JSON.parse(req.body);
         const loc=result.user_loc;
-        // const user_state_id=location.loc.find((item)=>item.city_name==loc).state_id
-        // const user_state_name=states.states.find((i)=>i.state_id==user_state_id).state_name.toUpperCase()
+
         // console.log(i.tweet_associated_place);
         result.tweets.forEach(async(i)=>{
         let place=i.tweet_associated_place.split(" ")[0]

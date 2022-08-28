@@ -13,6 +13,16 @@ import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
 import Tooltip from '@mui/material/Tooltip';
 import StyleIcon from '@mui/icons-material/Style';
 import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
+import SimpleBackdrop from "../Backdrop";
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { useRouter } from "next/router";
+import FullScreenDialog from "../Popup";
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const bull = (
   <Box
     component="span"
@@ -22,31 +32,7 @@ const bull = (
   </Box>
 );
 
-function BasicCard() {
-  return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="div">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
-        </Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
-  );
-}
+
 // import { SearchContainer, SearchInput } from "./ContactListComponent";
 // import Picker from "emoji-picker-react";
 // import { messagesList } from "../mockData";
@@ -129,9 +115,16 @@ const Priority_sort=styled.div`
 const MessageArea=({val,children})=> {
 //   const { selectedChat, userInfo, refreshContactList } = props;
   const [text, setText] = useState("");
+  const [resultBox, setresultBox] = useState(false)
   const [pickerVisible, togglePicker] = useState(false);
   const [arr_vals, setarr_vals] = useState(val);
-
+  const [loading, setloading] = useState(false)
+  const [user_tweets, setuser_tweets] = useState([])
+  const [open, setOpen] = useState(false);
+  const setBox=(val)=>{
+  setresultBox(val);
+}
+ const router=useRouter();
   const UpdateRating=async(val,id)=>{
     // console.log(val,id);
     let response= await fetch('/api/send',{
@@ -182,6 +175,30 @@ const MessageArea=({val,children})=> {
 //       setText("");
 //     }
 //   };
+
+
+const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setresultBox(false);
+  };
+
+const showTweets=async()=>{
+      setloading(true);
+      const user_loc=router.query.user;
+      const result =await fetch('/api/update_tweet',{
+      method:"POST",
+      body: JSON.stringify({"location":user_loc})
+      });
+      const tweets_asso=await result.json();
+      setuser_tweets(tweets_asso.tweets);
+      setloading(false);
+      setresultBox(true);
+}
+
+
   return (
     <Container>
         {children}
@@ -205,7 +222,7 @@ const MessageArea=({val,children})=> {
            </Tooltip>
           <Box sx={{ m: 0.5 }} />
           <Tooltip title="Show Tagged tweets">
-           <StyleIcon>
+           <StyleIcon onClick={()=>{showTweets()}}>
            </StyleIcon>
            </Tooltip>
           <Box sx={{ m: 0.5 }} />
@@ -214,7 +231,7 @@ const MessageArea=({val,children})=> {
            </MarkEmailUnreadIcon>
            </Tooltip>
         </Priority_sort>
-
+        {loading && <SimpleBackdrop/>}
 
         {arr_vals.map((message) => {
           return (
@@ -264,6 +281,22 @@ const MessageArea=({val,children})=> {
               }}
             />
           )}
+
+    {(user_tweets && resultBox)?(
+    <FullScreenDialog user_tweets={user_tweets} open={resultBox} setOpen={setBox}></FullScreenDialog>
+    ):(
+      <>
+      {(resultBox)?
+      (<>
+       <Snackbar open={resultBox} autoHideDuration={6000} onClose={handleClose}>
+        <Alert severity="info" onClose={handleClose} sx={{ width: '100%' }}>No tweets found</Alert>
+        </Snackbar>
+      </>):
+      (<></>)
+      }
+      </>
+    )
+    }
       {/* <ChatBox>
 
           <EmojiImage
