@@ -63,7 +63,7 @@ const StyledH3 = styled.h3`
 const calc = (x, y) => [-(y - window.innerHeight / 2) / 20, (x - window.innerWidth / 2) / 20, 1]
 const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
 
-const GlassCard = ({val}) => {
+const GlassCard = ({val,chat}) => {
     const [props, set] = useSpring(() => ({ xys: [0, 0, 1] , config: config.default}))
     const router=useRouter();
      const [open, setOpen] = React.useState(false);
@@ -102,8 +102,7 @@ const GlassCard = ({val}) => {
           There is no link associated with the tweet
         </Alert>
       </Snackbar>
-      <Room>
-    </Room>
+      <Room chat={chat?.chats}/>
         </Wrapper>
     );
 }
@@ -117,10 +116,13 @@ export const getServerSideProps=async(context)=>{
   let db=await connectToDatabase(); 
   let val= JSON.parse(JSON.stringify(await db.collection("tweets").findOne(
     {_id:ob_id})));
-    // console.log(val);
+    let chat=JSON.parse(JSON.stringify(await db.collection("chat").findOne(
+      {tweet_room_id:id}
+    )));
+    // console.log(chat);
 return {
     props:{
-      val
+      val,chat
     }
 }
 }

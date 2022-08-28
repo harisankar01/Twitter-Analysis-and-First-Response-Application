@@ -77,15 +77,24 @@ background-color: #080420;
   }
 `;
 
-export default function Room() {
-
+export default function Room({chat}) {
+console.log(chat);
   const router=useRouter()
-  const [msg, setmsg] = useState([])
+  const [msg, setmsg] = useState(chat?chat:[])
   
-const handlemsg=(e)=>{
+const handlemsg=async(e)=>{
   const mssg=[...msg]
   mssg.push(e);
   setmsg(mssg)
+  let response= await fetch('/api/chat',{
+      method:"PUT",
+      body:JSON.stringify({
+      "tweet_room_id":router.query.chat_room,
+      "user":router.query.user,
+      "message":e.message
+    }),
+    })
+console.log(response);
 }
 const scrollRef = useRef();
     useEffect(() => {
@@ -94,12 +103,12 @@ const scrollRef = useRef();
   return (
     <Container>
    <div className="chat-messages">
-        {msg.map((message) => {
+        {msg.map((message,index) => {
           return (
-            <div ref={scrollRef} key={message.id}>
+            <div ref={scrollRef} key={index}>
               <div
                 className={`message ${
-                  message.from==router.query.user ? "sended" : "recieved"
+                  message.user_name==router.query.user ? "sended" : "recieved"
                 }`}
               >
                 <div className="content ">
@@ -114,3 +123,5 @@ const scrollRef = useRef();
       </Container>
   )
 }
+
+

@@ -81,7 +81,7 @@ export default function ChatInput({ handleSendMsg }) {
     event.preventDefault();
     const sender={
         "message":msg,
-        "from":router.query.user
+        "user_name":router.query.user
     };
     if (msg.length > 0) {
       handleSendMsg(sender);
