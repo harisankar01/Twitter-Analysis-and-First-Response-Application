@@ -8,7 +8,9 @@ import { Box, Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import Room from '../../../../components/ChatrRoom';
+import Room from '../../../../components/ChatRoom';
+import SimpleBackdrop from '../../../../components/Backdrop';
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -64,12 +66,28 @@ const calc = (x, y) => [-(y - window.innerHeight / 2) / 20, (x - window.innerWid
 const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
 
 const GlassCard = ({val,chat}) => {
+  const [loading, setloading] = React.useState(false)
     const [props, set] = useSpring(() => ({ xys: [0, 0, 1] , config: config.default}))
     const router=useRouter();
      const [open, setOpen] = React.useState(false);
+     const [open2, setopen2] = React.useState(false)
     const handleClose = () => {
             setOpen(false);
+            setopen2(false)
           };
+      const ReplyTweet=async()=>{
+        setloading(true)
+          const msg=val.tweet;
+        let response= await fetch('/api/send',{
+        method:"POST",
+        body:JSON.stringify({
+        "tweet_msg":msg,
+      }),
+      })
+      let cal=await response.json();
+      setloading(false);
+      setopen2(true);
+          }
     return (
       <Wrapper>
         <Container
@@ -87,19 +105,26 @@ const GlassCard = ({val,chat}) => {
         </Container>
         <Column>
         <Button variant="contained" color="secondary" onClick={()=>{
+          console.log(val.Associated_url);
             if(val.Associated_url!="Not available"){
-                router.push(val._id);
+                router.push(val.Associated_url);
             }
             else{
                 setOpen(true)
             }
         }}>Visit link</Button>
        <Box sx={{ m: 1 }} />
-        <Button variant="contained" color="secondary" >Reply Tweet</Button>
+             {loading && <SimpleBackdrop/>}
+        <Button variant="contained" color="secondary" onClick={ReplyTweet} >Reply Tweet</Button>
         </Column>
         <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>
           There is no link associated with the tweet
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open2} autoHideDuration={5000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Replied to tweet successfully
         </Alert>
       </Snackbar>
       <Room chat={chat?.chats}/>
@@ -119,7 +144,6 @@ export const getServerSideProps=async(context)=>{
     let chat=JSON.parse(JSON.stringify(await db.collection("chat").findOne(
       {tweet_room_id:id}
     )));
-    // console.log(chat);
 return {
     props:{
       val,chat

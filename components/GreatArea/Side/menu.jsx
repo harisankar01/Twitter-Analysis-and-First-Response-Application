@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import { Router, useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Block = styled.div`
     border-left: 3px solid ${props => props.active ? props.theme.activeMenu : "transparent"};
@@ -33,11 +35,14 @@ const Title = styled.h1`
     color: ${props => props.active ? props.theme.activeMenu : "#AAA5A5"};
 `
 
-const MenuLink = ({ title, active, icon }) => {
-
+const MenuLink = ({ title, active, icon,link }) => {
+    // console.log(icon);
+    const router=useRouter()
     return (
         <Block active={active}>
-            <Span active={active} className="iconify" data-inline="false" data-icon={`mdi-light:${icon}`}></Span>
+            <Span active={active} className="iconify" data-inline="false" onClick={()=>router.push(link)}>
+                <ViewInArIcon/>
+            </Span>
             <Title active={active}>{title}</Title>
         </Block>
     )
@@ -51,13 +56,20 @@ const Container = styled.div`
 `
 
 export const Menu = () => {
+    const router=useRouter()
+    const menuItems = [
+  { id: 1, label: "Home", icon: ViewInArIcon, link: `/${router.query.user}` },
+  { id: 2, label: "Tweets", icon: "", link: `` },
+  { id: 3, label: "Visualize", icon: "", link: `/${router.query.user}/${router.query.departments}/Visualize` },
+  { id: 4, label: "Chat Rooms", icon: "", link: `/${router.query.user}/${router.query.departments}/ChatRooms` },
+];
     return (
         <Container>
-            <MenuLink title="Home" icon={'home'}/>
-            <MenuLink title="Deposits" icon={'file-multiple'} active />
-            <MenuLink title="Offers" icon={'gift'}/>
-            <MenuLink title="Payments" icon={'bank'}/>
-            <MenuLink title="Settings" icon={'cog'} />
+            {menuItems.map((i)=>{
+                return(
+                    <MenuLink title={i.label} icon={i.icon} link={i.link}/>
+                )
+            })}
         </Container>
     )
 }

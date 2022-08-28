@@ -48,7 +48,7 @@ const TweetDisplay = ({ data }) => {
             <Subtitle>Time of tweet: {item.Time_of_tweet}</Subtitle>
             <Subtitle>Tweet associated with {item.tweet_associated_place}</Subtitle>
             <Subtitle>Tweeted By: {item["User name"]}</Subtitle>
-            <LaunchIcon onClick={()=>{router.push(`/${asPath}/${item._id}`)}} />
+            <LaunchIcon onClick={()=>{router.push(`/${router.query.user}/${router.query.departments}/${item._id}`)}} />
         </Container>
         <Divider light />
         </>
