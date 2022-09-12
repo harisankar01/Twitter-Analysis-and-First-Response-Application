@@ -9,7 +9,7 @@ export const states={"states":
 {"state_id":"7","state_name":"Chhattisgarh","country_id":"101"},
 {"state_id":"8","state_name":"Dadra and Nagar Haveli","country_id":"101"},
 {"state_id":"9","state_name":"Daman and Diu","country_id":"101"},
-{"state_id":"10","state_name":"Delhi","country_id":"101"},
+{"state_id":"10","state_name":"NCT OF DELHI","country_id":"101"},
 {"state_id":"11","state_name":"Goa","country_id":"101"},
 {"state_id":"12","state_name":"Gujarat","country_id":"101"},
 {"state_id":"13","state_name":"Haryana","country_id":"101"},

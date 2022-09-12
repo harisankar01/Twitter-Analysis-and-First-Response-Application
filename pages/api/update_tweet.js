@@ -33,15 +33,17 @@ switch (method) {
          const db=await connectToDatabase()
         const result=JSON.parse(req.body);
         const loc=result.user_loc;
-
-        // console.log(i.tweet_associated_place);
         result.tweets.forEach(async(i)=>{
-        let place=i.tweet_associated_place.split(" ")[0]
+        let place=i.tweet_associated_place.trim().split(" ")[0]
         let fina_place=place.charAt(0).toUpperCase() + place.slice(1);
          let j=JSON.parse(JSON.stringify(await db.collection("locations").findOne({"SUB.DISTRICT.NAME":fina_place})))
+         if(!j){
+         j=JSON.parse(JSON.stringify(await db.collection("locations").findOne({"Area.Name":fina_place})))
+         }
          let result=await db.collection("users").updateOne({state:j?.STATE?.NAME},{$addToSet:{
         tweets:i._id
         }})
+        console.log(result);
         })
         res.status(201).json({ success: true})
        }

@@ -1,5 +1,6 @@
 import { ThemeContextProvider } from '../components/GreatArea/Side/theme'
 import '../styles/globals.css'
+import reportWebVitals from './reportwebvitals';
 ThemeContextProvider
 function MyApp({ Component, pageProps }) {
   return(
@@ -10,3 +11,4 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp
+reportWebVitals();

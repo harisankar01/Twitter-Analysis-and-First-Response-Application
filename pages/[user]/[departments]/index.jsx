@@ -4,7 +4,7 @@ import TweetDisplay from '../../../components/GreatArea/Main'
 import Chat from "../../../components/GreatArea/Side/index"
 import { ThemeContext, ThemeContextProvider } from '../../../components/GreatArea/Side/theme'
 import { connectToDatabase } from '../../../src/service/db'
-
+import { states,location } from '../../../components/Login/states';
 const globalTheme = {
     switchWidth: '40px',
     switchHeight: '20px',
@@ -52,6 +52,7 @@ export default function Departments({val}) {
 }
 export const getServerSideProps=async(context)=>{
     let name=context.query.departments;
+    let user=context.query.user;
     // console.log(name);
     let query;
 if(name=="Fire"){
@@ -69,12 +70,16 @@ else if(name=="Sanity"){
 else{
     query="police complaints"
 }
+
   let db=await connectToDatabase(); 
-  let val= JSON.parse(JSON.stringify(await db.collection("tweets").find({$and:[{Department:`${query}`},{Prediction:"1.0"}]}).sort({$Time_of_tweet:1}).limit(50).toArray()));
+          const user_state_id=location.loc.find((item)=>item.city_name==user).state_id
+        const user_state_name=states.states.find((i)=>i.state_id==user_state_id).state_name.toUpperCase();
+        let val=JSON.parse(JSON.stringify(await db.collection("tweets").find({"tweet_associated_place":user_state_name}).toArray()));
   let value= JSON.parse(JSON.stringify(await db.collection("Chat").find({Department: name}).toArray()));
+   let value2= JSON.parse(JSON.stringify(await db.collection("users").findOne({state: name})));
 return {
     props:{
-      val,value
+      val,value,value2
     }
 }
 }

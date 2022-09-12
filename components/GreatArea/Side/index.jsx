@@ -18,11 +18,11 @@ const Container = styled.div`
 
 `
 
-const Sidebar = () => {
+const Sidebar = ({value2}) => {
 
     return (
         <Container>
-            <Profile />
+            <Profile value2={value2}/>
             <Menu />
             <ToggleSwitch />
         </Container>

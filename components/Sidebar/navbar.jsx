@@ -11,12 +11,12 @@ import {
   UsersIcon,
   VideosIcon,
 } from "./icons";
-import {AiFillFire} from "react-icons/ai"
+import {GiHospitalCross} from "react-icons/gi"
 import {FaTrafficLight} from "react-icons/fa"
-import {TbBuildingFactory} from "react-icons/tb"
-import {FaTrashRestoreAlt} from "react-icons/fa"
-
-
+import {GiIndianPalace} from "react-icons/gi"
+import {GiPlagueDoctorProfile} from "react-icons/gi"
+import {MdOutlinePersonSearch} from "react-icons/md"
+import {GoIssueOpened} from "react-icons/go"
 
 const Sidebar = () => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
@@ -25,11 +25,11 @@ const Sidebar = () => {
   const [isCollapsible, setIsCollapsible] = useState(false);
 const menuItems = [
   { id: 1, label: "Home", icon: HomeIcon, link: `/${user_name}` },
-  { id: 2, label: "Fire Department", icon: AiFillFire, link: `/${user_name}/Fire` },
-  { id: 3, label: "Traffic accidents", icon: FaTrafficLight, link: `/${user_name}/Traffic accidents` },
-  { id: 4, label: "Polloution problems", icon: TbBuildingFactory, link: `/${user_name}/pollution` },
-  {id:5,label:"Sanity Department",icon:FaTrashRestoreAlt,link:`${user_name}/Sanity`},
-  {id:6,label:"Complaints",icon:ArticleIcon,link:`/${user_name}/Complaints`}
+  { id: 2, label: "Search", icon: MdOutlinePersonSearch, link: `https://twitter--sentiment--analysiss.herokuapp.com/` },
+  { id: 3, label: "Alerts", icon: FaTrafficLight, link: `/${user_name}/Alerts` },
+  { id: 4, label: "Complaints", icon: GoIssueOpened, link: `/${user_name}/Complaints` },
+  {id:5,label:"Digital Profiles",icon:GiPlagueDoctorProfile,link:`${user_name}/digital_profile`},
+  {id:6,label:"Geotagging Hotspots",icon:GiIndianPalace,link:`/${user_name}/geo`}
 ];
 
   const activeMenu = useMemo(

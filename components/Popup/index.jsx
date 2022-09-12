@@ -12,8 +12,8 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
  import { makeStyles } from '@mui/styles';
 import Slide from '@mui/material/Slide';
-import { Box, ListSubheader,  Paper } from '@mui/material';
-import { width } from '@mui/system';
+import { Box, colors, ListSubheader,  Paper } from '@mui/material';
+import emailjs from '@emailjs/browser';
 import { useRouter } from 'next/router';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -61,8 +61,19 @@ const FullScreenDialog=({user_tweets,open,setOpen})=> {
   const handleClose = () => {
     setOpen(false);
   };
-
+let template_params;
   const router=useRouter();
+
+  const sendEmail=async(e)=>{
+    e.preventDefault(); 
+
+    template_params= {
+        'message': `${user_tweets}`,
+        'state': 'Tamil Nadu'
+      }
+      emailjs.send("service_pp2x3gl","template_bly1khx",template_params).then(()=>console.log("sucess"))
+      console.log(data);
+}
 
   return (
     <div>
@@ -85,6 +96,8 @@ const FullScreenDialog=({user_tweets,open,setOpen})=> {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               <h2>The tweets associated with your region are</h2>
             </Typography>
+            
+          <Button variant='contained' color="secondary" sx={{backgroundColor:"#adc428"}} onClick={(e)=>sendEmail(e)}>Press here</Button>
           </Toolbar>
         </AppBar>
         <List>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Divider } from "@mui/material";
 import Rating from '@mui/material/Rating';
-import Icon from '@mui/material/Icon';
+import EmailPopup from "../Popup/emailPopup";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -28,15 +28,11 @@ const bull = (
     component="span"
     sx={{ display: 'inline-block', mx: '5px', transform: 'scale(0.8,0.7)' }}
   >
-    •
   </Box>
 );
 
 
-// import { SearchContainer, SearchInput } from "./ContactListComponent";
-// import Picker from "emoji-picker-react";
-// import { messagesList } from "../mockData";
-// import httpManager from "../managers/httpManager";
+
 
 const Container = styled.div`
   display: flex;
@@ -120,7 +116,7 @@ const MessageArea=({val,children})=> {
   const [arr_vals, setarr_vals] = useState(val);
   const [loading, setloading] = useState(false)
   const [user_tweets, setuser_tweets] = useState([])
-  const [open, setOpen] = useState(false);
+  const [open_pop, setopen_pop] = useState(false)
   const setBox=(val)=>{
   setresultBox(val);
 }
@@ -185,6 +181,10 @@ const handleClose = (event, reason) => {
     setresultBox(false);
   };
 
+  const Close_pop=()=>{
+    setopen_pop(false);
+  }
+
 const showTweets=async()=>{
       setloading(true);
       const user_loc=router.query.user;
@@ -209,9 +209,9 @@ const showTweets=async()=>{
         </ProfileInfo>
         style={{cursor:"pointer",display:"inline-flex",width:800,}}
       </ProfileHeader> */}
-      {console.log(
+      {/* {console.log(
         children.props
-      )}
+      )} */}
       <MessageContainer> 
         <Priority_sort>
            <Tooltip title="Sort tweets by priority">
@@ -221,14 +221,8 @@ const showTweets=async()=>{
         }}></CategoryRoundedIcon>
            </Tooltip>
           <Box sx={{ m: 0.5 }} />
-          <Tooltip title="Show Tagged tweets">
-           <StyleIcon onClick={()=>{showTweets()}}>
-           </StyleIcon>
-           </Tooltip>
-          <Box sx={{ m: 0.5 }} />
            <Tooltip title="Change or add mail address">
-           <MarkEmailUnreadIcon>
-           </MarkEmailUnreadIcon>
+           <MarkEmailUnreadIcon onClick={()=>setopen_pop(true)}/>
            </Tooltip>
         </Priority_sort>
         {loading && <SimpleBackdrop/>}
@@ -238,20 +232,21 @@ const showTweets=async()=>{
               <Message key={message._id}>
 <Card sx={{ minWidth:700,maxWidth:750,maxHeight:350,minHeight:150 }}>
       <CardContent>
-        <Typography sx={{ fontSize: 8 }} color="text.secondary" gutterBottom>
-          Department: {message.Department}
-        </Typography>
         <Typography variant="h5" component="div">
           {message.tweet}
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        <Typography sx={{ mb: 1.5 }} color="text.secondary" >
           Time of Tweet: {message.Time_of_tweet}
         </Typography>
-        <Typography variant="body2">
+        {message.tweet_associated_place?(
+        <Typography variant="body2" >
           This tweet belongs to the {message.tweet_associated_place?message.tweet_associated_place:(message.tweeter_location?message.tweeter_location:"location not provided")} station
           <br />
           Tweeted by: {message["User name"]}
         </Typography>
+        ):(
+          <></>
+        )}
       </CardContent>
       <Typography align="right">
       <Rating name="size-medium" align="left" defaultValue={message.Priority} onClick={(e)=>UpdateRating(e.target.value,message._id)} />
@@ -262,6 +257,7 @@ const showTweets=async()=>{
           );
         })}
       </MessageContainer>
+      {open_pop && <EmailPopup flag={open_pop} flagfunc={Close_pop}/>}
       {/* <MessageContainer>
         {messageList?.map((messageData) => (
           <MessageDiv >
