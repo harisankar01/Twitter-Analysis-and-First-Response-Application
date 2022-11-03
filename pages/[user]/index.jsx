@@ -45,7 +45,8 @@ export const getServerSideProps=async(context)=>{
     let value= await db.collection("users").findOne({"state":user_state_name})
       value=JSON.parse(JSON.stringify(value))
       // val[0].tweet_associated_place
-      let val= await fetch(`https://twitter-extractor.azurewebsites.net/tweets?domain=${value.handle}`,{
+      const url=process.env.BACKEND_URL+`tweets?domain=${value.handle}`
+      let val= await fetch(url,{
       method:"GET",
     }).then((r)=>r.json())
 

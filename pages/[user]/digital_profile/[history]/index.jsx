@@ -51,10 +51,12 @@ export default function Departments({val,calue}) {
 }
 export const getServerSideProps=async(context)=>{
     let name=context.query.history
-      let val= await fetch(`http://10.72.2.170:5000/info?name=${name}`,{
+    const anlyser_url=process.env.TWEET_ANALYSER +`info?name=${name}`
+      let val= await fetch(anlyser_url,{
       method:"GET",
     }).then((r)=>r.json())
-    let calue=await fetch(`https://twitter-extractor.azurewebsites.net/user?name=${name}`,{
+    const url=process.env.BACKEND_URL+`user?name=${name}`;
+    let calue=await fetch(url,{
       method:"GET",
     }).then((r)=>r.json())
         
