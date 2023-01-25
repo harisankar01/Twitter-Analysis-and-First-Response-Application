@@ -72,7 +72,7 @@ Azure functions have been used for the following functions,
   A time-based trigger is used to populate the databases.
 
 Please check the image for the structure of the pipeline,
-<img src="./Screenshots/Azure.png" />
+![Azure](https://user-images.githubusercontent.com/90249023/214674070-f0b56d0f-3f6e-4f83-901f-a64263430b66.png)
 
 The websites are deployed with **azure web app** directly from visual studio using the Azure Cloud extension of visual studio.
 
@@ -82,27 +82,27 @@ The configuration of the database used is: **Cosmos DB with MongoDB API** and is
 
 ### The user can log in by selecting the state and the city in India.
 
-<img src="./Screenshots/Login.png" />
+![Login](https://user-images.githubusercontent.com/90249023/214674007-ebc7fc6d-1d3f-4d48-a505-5f72db446cc9.png)
 
 ### The home page loads the tweets that were tagged or mentioned to the police of that city.
 
-<img src="./Screenshots/Home.png" />
+![Home](https://user-images.githubusercontent.com/90249023/214674026-6a70ea54-ed94-43d3-b65a-4a623bff5e66.png)
 
 ### The complaints page shows the complaints given to the people of the state
 
-<img src="./Screenshots/Complaints.png" />
+![Complaints](https://user-images.githubusercontent.com/90249023/214674054-ccb666d2-4028-4f0c-93a9-49da61c7e9fe.png)
 
 ### The Chat is featured as a chat room for each tweet
 
-<img src="./Screenshots/Chat.png" />
+![Chat](https://user-images.githubusercontent.com/90249023/214674060-7e94b3ca-3ddf-4bae-9ddc-9a9adfaef8ba.png)
 
 ### The timeline of tweets posted by suspected people can be viewed in the digital profile section
 
-<img src="./Screenshots/Timeline.png" />
+![Timeline](https://user-images.githubusercontent.com/90249023/214674098-2c30ac85-44c3-4374-85e9-444c637151f0.png)
 
 ### When a tweet in the timeline module is clicked, it will lead to the page featuring the basic details of the suspect
 
-<img src="./Screenshots/Data.png" />
+![Data](https://user-images.githubusercontent.com/90249023/214674046-501abcbf-9534-4254-9e69-18c7aa679259.png)
 
 ### Addition Remarks
 
